@@ -34,7 +34,7 @@ io.on('connection', socket => {
                 setTimeout(function () {
                     console.log('time out')
                     io.emit('CLOSE_QUESTION');
-                }, 10000)
+                }, 12000)
             }, 0);
         
         })
