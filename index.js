@@ -13,10 +13,14 @@ const server = http.createServer(app);
 // This creates our socket using the instance of the server
 const io = socketIO(server);
 
+const room = "COMMON_ROOM";
+
 
 // This is what the socket.io syntax is like, we will work this later
 io.on('connection', socket => {
     console.log('User connected')
+
+    socket.join(room);
 
     socket.on('GO_TO_GET_QUESTION', () => {
         fetch('http://bonddemo.tk/v1/question/request-question-node', {
@@ -40,6 +44,10 @@ io.on('connection', socket => {
         })
         .catch(error => console.log(error));
     })
+
+    socket.on("CLIENT_CHAT", (data) => {
+		io.sockets.in(room).emit("SERVER_CHAT", data);
+	})
 
     
     socket.on('disconnect', () => {
