@@ -83,6 +83,11 @@ io.on('connection', socket => {
         io.emit("RESPONSE_ANSWER_TO_CLIENT", res_data);
     });
 
+
+    socket.on("SUMMARY", (data)=> {
+        console.log(data);
+    })
+
     
     socket.on('disconnect', () => {
         console.log('user disconnected')
