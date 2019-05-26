@@ -52,29 +52,34 @@ io.on('connection', socket => {
     socket.on("CLIENT_CHAT", (data) => {
 		io.sockets.in(room).emit("SERVER_CHAT", data);
     })
-    
+    var listAnswer = [];
 
     socket.on("CHECK_ANSWER", (data) => {
-		var form = new FormData();
-        form.append('email', data[0]);
-        form.append('answer', data[1]);
-        form.append('id', data[2]);
-
-        current_id = data[2];
-
-        fetch('http://bonddemo.tk/v1/question/check-answer', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
-            },
-            body: form
-        })
-        .then(res => {
-            res.json().then(response => {
-                console.log(response);
-                current_answer = response.answer;
-            })
-        })
+		var answerClient = {
+            email : data[0],
+            answer: data[1],
+            id : data[2],
+        };
+        listAnswer.push(answerClient);
+		// var form = new FormData();
+        // form.append('email', data[0]);
+        // form.append('answer', data[1]);
+        // form.append('id', data[2]);
+        console.log(listAnswer);
+        // current_id = data[2];
+        // fetch('http://bonddemo.tk/v1/question/check-answer', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
+        //     },
+        //     body: form
+        // })
+        // .then(res => {
+        //     res.json().then(response => {
+        //         console.log(response);
+        //         current_answer = response.answer;
+        //     })
+        // })
     })
 
 
