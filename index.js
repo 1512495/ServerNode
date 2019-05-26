@@ -39,9 +39,9 @@ io.on('connection', socket => {
             setTimeout(function () {
                 io.emit('BROADCAST_QUESTION_TO_CLIENT', response);
                 setTimeout(function () {
-                    console.log('time out')
-                    io.emit('CLOSE_QUESTION');
+                    //TODO
                 }, 12000)
+                io.emit('CLOSE_QUESTION');
             }, 0);
         
         })
