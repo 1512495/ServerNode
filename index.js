@@ -40,8 +40,9 @@ io.on('connection', socket => {
                 io.emit('BROADCAST_QUESTION_TO_CLIENT', response);
                 setTimeout(function () {
                     //TODO
+                    io.emit('CLOSE_QUESTION');
                 }, 12000)
-                io.emit('CLOSE_QUESTION');
+                
             }, 0);
         
         })
