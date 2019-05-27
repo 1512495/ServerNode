@@ -64,8 +64,9 @@ io.on('connection', socket => {
     })
     
 
-    socket.on('RESPONSE_ANSWER_TO_NODE', () => {
-        io.emit("RESPONSE_ANSWER_TO_CLIENT", arrayAnswer);
+    socket.on('RESPONSE_ANSWER_TO_NODE', (program_id) => {
+        var response = arrayAnswer[program_id - 1];
+        io.emit("RESPONSE_ANSWER_TO_CLIENT", response);
     });
 
     
