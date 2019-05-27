@@ -16,6 +16,8 @@ const io = socketIO(server);
 
 const room = "COMMON_ROOM";
 var arrayAnswer = [];
+var right = 0;
+var wrong = 0;
 
 //get array answer of program
 fetch('http://bonddemo.tk/v1/question/program-question', {
@@ -66,7 +68,20 @@ io.on('connection', socket => {
 
     socket.on('RESPONSE_ANSWER_TO_NODE', (program_id) => {
         var response = arrayAnswer[program_id - 1];
+        right = 0;
+        wrong = 0;
         io.emit("RESPONSE_ANSWER_TO_CLIENT", response);
+    });
+
+    
+    socket.on("SUMMARY", (dataSum)=> {
+        
+        if(dataSum[1] === true) {
+            right++;
+        } else {
+            wrong++;
+        }
+        socket.emit("MC_STATISTIC", [right, wrong]);
     });
 
     
