@@ -2,7 +2,6 @@ const express = require('express');
 const http = require('http');
 const fetch = require('node-fetch');
 const socketIO = require('socket.io');
-const FormData = require('form-data');
 
 // our localhost port
 const port = 1235;
@@ -75,15 +74,18 @@ io.on('connection', socket => {
 
     
     socket.on("SUMMARY", (dataSum)=> {
-        
         if(dataSum[1] === true) {
             right++;
         } else {
             wrong++;
         }
-        socket.emit("MC_STATISTIC", [right, wrong]);
+        io.emit("MC_STATISTIC", [right, wrong]);
     });
 
+
+    socket.on("END_GAME", ()=> {
+        io.emit("END_GAME_TO_CLIENT");
+    });
     
     socket.on('disconnect', () => {
         console.log('user disconnected')
