@@ -17,6 +17,8 @@ const room = "COMMON_ROOM";
 var arrayAnswer = [];
 var right = 0;
 var wrong = 0;
+var sumWinner = 0;
+var arrayWinner = [];
 
 //get array answer of program
 fetch('http://bonddemo.tk/v1/question/program-question', {
@@ -38,6 +40,11 @@ io.on('connection', socket => {
     console.log('User connected')
 
     socket.join(room);
+
+    socket.on("START_GAME", ()=> {
+        sumWinner = 0;
+        arrayWinner = [];
+    });
 
     socket.on('GO_TO_GET_QUESTION', (program_id) => {
         fetch('http://bonddemo.tk/v1/question/render-question-program?sttQuestion='+program_id, {
@@ -69,7 +76,7 @@ io.on('connection', socket => {
         var response = arrayAnswer[program_id - 1];
         right = 0;
         wrong = 0;
-        io.emit("RESPONSE_ANSWER_TO_CLIENT", response);
+        io.emit("RESPONSE_ANSWER_TO_CLIENT", [response, program_id]);
     });
 
     
@@ -82,9 +89,15 @@ io.on('connection', socket => {
         io.emit("MC_STATISTIC", [right, wrong]);
     });
 
+    socket.on("WINNER", (winner)=> {
+       sumWinner++;
+       arrayWinner.push(winner);
+    });
+
 
     socket.on("END_GAME", ()=> {
-        io.emit("END_GAME_TO_CLIENT");
+        var dataEndGame = [sumWinner, arrayWinner];
+        io.emit("END_GAME_TO_CLIENT", dataEndGame);
     });
     
     socket.on('disconnect', () => {
