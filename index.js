@@ -19,6 +19,7 @@ var right = 0;
 var wrong = 0;
 var sumWinner = 0;
 var arrayWinner = [];
+var money = 0;
 
 //get array answer of program
 fetch('http://bonddemo.tk/v1/question/program-question', {
@@ -32,6 +33,7 @@ fetch('http://bonddemo.tk/v1/question/program-question', {
     .then(response => {
         console.log(response);
         arrayAnswer = response;
+        money = response[10].money;
     })
     .catch(error => console.log(error));
 
@@ -96,7 +98,8 @@ io.on('connection', socket => {
 
 
     socket.on("END_GAME", ()=> {
-        var dataEndGame = [sumWinner, arrayWinner];
+        var moneyEachClient = money / sumWinner;
+        var dataEndGame = [sumWinner, arrayWinner, moneyEachClient];
         io.emit("END_GAME_TO_CLIENT", dataEndGame);
     });
     
