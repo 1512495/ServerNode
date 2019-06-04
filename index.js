@@ -60,7 +60,7 @@ io.on('connection', socket => {
         .then(response => {
             console.log(response);
             setTimeout(function () {
-                io.emit('BROADCAST_QUESTION_TO_CLIENT', response);
+                io.emit('BROADCAST_QUESTION_TO_CLIENT', {response: response, program_id:program_id});
                 setTimeout(function () {
                     io.emit('CLOSE_QUESTION');
                 }, 12000)
@@ -78,7 +78,7 @@ io.on('connection', socket => {
         var response = arrayAnswer[program_id - 1];
         right = 0;
         wrong = 0;
-        io.emit("RESPONSE_ANSWER_TO_CLIENT", [response, program_id]);
+        io.emit("RESPONSE_ANSWER_TO_CLIENT", {response: response, program_id: program_id});
     });
 
     
@@ -88,7 +88,7 @@ io.on('connection', socket => {
         } else {
             wrong++;
         }
-        io.emit("MC_STATISTIC", [right, wrong]);
+        io.emit("STATISTIC", {right: right, wrong: wrong});
     });
 
     socket.on("WINNER", (winner)=> {
