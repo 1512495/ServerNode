@@ -63,7 +63,7 @@ io.on('connection', socket => {
                 io.emit('BROADCAST_QUESTION_TO_CLIENT', {response: response, program_id:program_id});
                 setTimeout(function () {
                     io.emit('CLOSE_QUESTION');
-                }, 12000)
+                }, 10000)
             }, 0);
         })
         .catch(error => console.log(error));
@@ -101,6 +101,11 @@ io.on('connection', socket => {
         var moneyEachClient = money / sumWinner;
         var dataEndGame = [sumWinner, arrayWinner, moneyEachClient];
         io.emit("END_GAME_TO_CLIENT", dataEndGame);
+    });
+
+
+    socket.on("SEND_ICON", (value)=> {
+        io.emit("SEND_ICON_TO_CLIENT", value);
     });
     
     socket.on('disconnect', () => {
